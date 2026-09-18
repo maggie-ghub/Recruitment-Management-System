@@ -1,0 +1,178 @@
+<template>
+  <div class="min-h-screen bg-[#faf8f5] flex flex-col font-sans">
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-[#f0e9dc] sticky top-0 z-30 shadow-xs">
+      <div class="max-w-[1500px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-18 items-center">
+          <!-- Logo & Holding Branding -->
+          <div class="flex items-center space-x-3.5">
+            <img src="../assets/TORA_Logo.png" alt="Tora Holding Company Logo" class="h-12 w-auto object-contain drop-shadow-xs" />
+            <div>
+              <div class="text-xl font-extrabold text-neutral-900 tracking-tight flex items-center gap-2">
+                <span>Tora Holding Company</span>
+              </div>
+              <p class="text-xs text-[#7a6e5a] font-medium">Recruitment Management System</p>
+            </div>
+          </div>
+
+          <!-- User Menu & Context -->
+          <div class="flex items-center space-x-4">
+            <!-- Company Scope Pill: Fully visible without cutoff -->
+            <div v-if="authStore.user?.subsidiary" class="flex items-center px-4 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-xs font-semibold text-[#8f5a11] shadow-2xs">
+              <span class="w-2 h-2 rounded-full bg-[#db802d] mr-2 shrink-0"></span>
+              <span class="text-neutral-500 mr-1">Company:</span>
+              <span class="text-neutral-900 font-bold whitespace-normal">{{ authStore.user.subsidiary.name }}</span>
+            </div>
+
+            <!-- Role Badge -->
+            <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#ebb630]/20 text-[#8f5a11] border border-amber-300/60">
+              {{ authStore.role }}
+            </span>
+
+            <!-- User Info & Logout -->
+            <div class="flex items-center space-x-3 border-l border-[#f0e9dc] pl-4">
+              <div class="text-right hidden sm:block">
+                <div class="text-sm font-bold text-neutral-900">{{ authStore.user?.name }}</div>
+                <div class="text-xs text-[#7a6e5a] font-medium">{{ authStore.user?.email }}</div>
+              </div>
+              <button
+                @click="handleLogout"
+                class="p-2.5 text-[#7a6e5a] hover:text-[#db802d] hover:bg-amber-50 rounded-2xl transition-all cursor-pointer"
+                title="Sign Out"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- App Body with Sidebar & Main Content (Broad Container, Large Content Width) -->
+    <div class="flex-1 flex max-w-[1500px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-7 gap-7">
+      <!-- Sidebar Navigation -->
+      <aside class="w-68 shrink-0 hidden md:block">
+        <div class="bg-white rounded-3xl border border-[#f0e9dc] p-4 shadow-xs sticky top-24 space-y-6">
+          <!-- Navigation Groups -->
+          <div>
+            <div class="text-xs font-bold tracking-wider text-[#7a6e5a] px-3 mb-2.5">Main Menu</div>
+            <nav class="space-y-1.5">
+              <router-link
+                to="/"
+                class="flex items-center px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all"
+                :class="$route.name === 'dashboard' ? 'bg-[#ebb630]/20 text-[#db802d]' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'"
+              >
+                <!-- Dashboard Icon -->
+                <svg class="w-5 h-5 mr-3 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+                </svg>
+                Dashboard
+              </router-link>
+
+              <!-- Vacancies Navigation -->
+              <router-link
+                to="/vacancies"
+                class="flex items-center px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all"
+                :class="$route.path.startsWith('/vacancies') ? 'bg-[#ebb630]/20 text-[#db802d]' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'"
+              >
+                <!-- Briefcase Icon -->
+                <svg class="w-5 h-5 mr-3 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                {{ authStore.isApplicant ? 'Browse Vacancies' : 'Vacancies' }}
+              </router-link>
+
+              <!-- Profile Link for Applicants -->
+              <router-link
+                v-if="authStore.isApplicant"
+                to="/profile"
+                class="flex items-center px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all"
+                :class="$route.name === 'profile' ? 'bg-[#ebb630]/20 text-[#db802d]' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'"
+              >
+                <!-- User Profile Icon -->
+                <svg class="w-5 h-5 mr-3 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Candidate Profile
+              </router-link>
+            </nav>
+          </div>
+
+          <!-- Administration Group (Admin & HR Manager) -->
+          <div v-if="authStore.isAdmin || authStore.isHRManager">
+            <div class="text-xs font-bold tracking-wider text-[#7a6e5a] px-3 mb-2.5">Organization & Admin</div>
+            <nav class="space-y-1.5">
+              <router-link
+                to="/admin/companies"
+                class="flex items-center px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all"
+                :class="$route.name === 'companies' ? 'bg-[#ebb630]/20 text-[#db802d]' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'"
+              >
+                <!-- Buildings Icon for Companies -->
+                <svg class="w-5 h-5 mr-3 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                Companies
+              </router-link>
+
+              <router-link
+                to="/admin/departments"
+                class="flex items-center px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all"
+                :class="$route.name === 'departments' ? 'bg-[#ebb630]/20 text-[#db802d]' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'"
+              >
+                <!-- Network / Hierarchy Icon for Departments -->
+                <svg class="w-5 h-5 mr-3 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Departments
+              </router-link>
+
+              <router-link
+                to="/admin/users"
+                class="flex items-center px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all"
+                :class="$route.name === 'users' ? 'bg-[#ebb630]/20 text-[#db802d]' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'"
+              >
+                <!-- User Group Icon for Users -->
+                <svg class="w-5 h-5 mr-3 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                User Management
+              </router-link>
+
+              <router-link
+                to="/admin/audit-logs"
+                class="flex items-center px-3.5 py-3 rounded-2xl text-sm font-semibold transition-all"
+                :class="$route.name === 'audit-logs' ? 'bg-[#ebb630]/20 text-[#db802d]' : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'"
+              >
+                <!-- Shield / Audit Log Icon -->
+                <svg class="w-5 h-5 mr-3 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Audit Trail
+              </router-link>
+            </nav>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Outlet -->
+      <main class="flex-1 min-w-0">
+        <router-view />
+      </main>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+const handleLogout = async () => {
+  await authStore.logout()
+  router.push('/login')
+}
+</script>
