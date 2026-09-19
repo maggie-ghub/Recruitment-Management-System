@@ -1,17 +1,20 @@
 <template>
   <div class="space-y-6">
     <!-- Header banner (Modern SaaS High-Contrast, Enriched Typography) -->
-    <div class="bg-white rounded-3xl p-7 sm:p-9 border border-[#f0e9dc] shadow-xs relative overflow-hidden">
-      <div class="max-w-4xl">
-        <div class="inline-flex items-center text-[#db802d] text-lg font-bold tracking-wider mb-3.5">
-          <span>Tora Holding Company - Vacancy Management System</span>
+    <div class="bg-[#29332f] rounded-[28px] p-7 sm:p-9 border border-[#29332f] shadow-[0_18px_40px_rgba(41,51,47,0.16)] relative overflow-hidden">
+      <div class="absolute -right-20 -top-24 h-64 w-64 rounded-full border-[26px] border-[#e9b949]/20"></div>
+      <div class="absolute right-20 -bottom-28 h-48 w-48 rounded-full border-[18px] border-[#c96b3b]/20"></div>
+      <div class="max-w-4xl relative">
+        <div class="inline-flex items-center text-[#e9b949] text-[11px] font-extrabold uppercase tracking-[0.18em] mb-3.5">
+          <span>Workspace overview</span>
         </div>
-        <h1 class="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+        <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
           Welcome Back, {{ authStore.user?.name }}!
         </h1>
-        <p class="mt-2.5 text-neutral-600 text-base leading-relaxed">
+        <p class="mt-2.5 text-[#d4ddd5] text-base leading-relaxed">
+          Your recruitment workspace is ready for the next move.
           <span v-if="authStore.user?.subsidiary" class="ml-1 text-neutral-700 font-medium">
-            Assigned to <strong>{{ authStore.user.subsidiary.name }}</strong>
+            Assigned to <strong class="text-white">{{ authStore.user.subsidiary.name }}</strong>
           </span>
         </p>
       </div>
@@ -19,28 +22,28 @@
 
     <!-- Stats / Quick Overview (3-Column SaaS Cards, Large & Clear) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white p-7 rounded-3xl border border-[#f0e9dc] shadow-xs hover:border-[#db802d]/50 transition-all">
+      <div class="bg-white p-7 rounded-2xl border border-[#e4e9e4] shadow-[0_8px_24px_rgba(41,51,47,0.045)] hover:-translate-y-0.5 hover:border-[#c96b3b]/40 transition-all">
         <div class="flex items-center justify-between">
-          <div class="text-xs font-bold tracking-wider text-[#7a6e5a]">Current Role</div>
-          <div class="w-9 h-9 rounded-2xl bg-amber-50 flex items-center justify-center text-[#db802d]">
+          <div class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#8a938b]">Current Role</div>
+          <div class="w-9 h-9 rounded-xl bg-[#f8f1df] flex items-center justify-center text-[#c96b3b]">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </div>
         </div>
-        <div class="mt-4 text-3xl font-extrabold text-neutral-900">{{ authStore.role }}</div>
+        <div class="mt-4 text-3xl font-extrabold text-[#29332f]">{{ authStore.role }}</div>
       </div>
 
-      <div class="bg-white p-6 rounded-2xl border border-[#f0e9dc] shadow-xs hover:border-[#db802d]/50 transition-all">
+      <div class="bg-white p-6 rounded-2xl border border-[#e4e9e4] shadow-[0_8px_24px_rgba(41,51,47,0.045)] hover:-translate-y-0.5 hover:border-[#c96b3b]/40 transition-all">
         <div class="flex items-center justify-between">
-          <div class="text-xs font-bold tracking-wider text-[#7a6e5a] break-words">Organizational Scope</div>
-          <div class="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center text-[#db802d]">
+          <div class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#8a938b] break-words">Organizational Scope</div>
+          <div class="w-8 h-8 rounded-xl bg-[#f8f1df] flex items-center justify-center text-[#c96b3b]">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
         </div>
-        <div class="mt-3 text-xl font-extrabold text-neutral-900 truncate">
+        <div class="mt-3 text-xl font-extrabold text-[#29332f] truncate">
           {{ authStore.user?.subsidiary?.name || 'Tora Holding Company' }}
         </div>
         <div class="mt-1 text-xs text-emerald-600 font-semibold flex items-center gap-1">
@@ -49,25 +52,25 @@
         </div>
       </div>
 
-      <div class="bg-white p-6 rounded-2xl border border-[#f0e9dc] shadow-xs hover:border-[#db802d]/50 transition-all">
+      <div class="bg-white p-6 rounded-2xl border border-[#e4e9e4] shadow-[0_8px_24px_rgba(41,51,47,0.045)] hover:-translate-y-0.5 hover:border-[#c96b3b]/40 transition-all">
         <div class="flex items-center justify-between">
-          <div class="text-xs font-bold tracking-wider text-[#7a6e5a]">Account Status</div>
-          <div class="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <div class="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#8a938b]">Account Status</div>
+          <div class="w-8 h-8 rounded-xl bg-[#e7f2e9] flex items-center justify-center text-[#39754d]">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
         </div>
         <div class="mt-3 flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-          <span class="text-2xl font-extrabold text-neutral-900 capitalize">{{ authStore.user?.status || 'Active' }}</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-[#4b9b63]"></span>
+          <span class="text-2xl font-extrabold text-[#29332f] capitalize">{{ authStore.user?.status || 'Active' }}</span>
         </div>
         <div class="mt-1 text-xs text-neutral-500">Fully verified & enabled</div>
       </div>
     </div>
 
     <!-- Action Shortcuts based on role -->
-    <div class="bg-white p-6 rounded-3xl border border-[#f0e9dc] shadow-xs">
+    <div class="bg-white p-6 rounded-2xl border border-[#e4e9e4] shadow-[0_8px_24px_rgba(41,51,47,0.045)]">
       <h2 class="text-base font-bold text-neutral-900 mb-4 flex items-center gap-2">
         <svg class="w-5 h-5 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />

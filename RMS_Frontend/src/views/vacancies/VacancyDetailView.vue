@@ -407,6 +407,7 @@
               <svg class="w-3.5 h-3.5 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               Screening Questions <span class="text-[10px] font-normal text-neutral-500">(required)</span>
             </h4>
+            <p v-if="screeningError" class="mb-2.5 text-xs font-medium text-rose-600" role="alert">{{ screeningError }}</p>
             <div class="space-y-3">
               <div v-for="(q, qi) in vacancy.questions" :key="q.id" class="p-3.5 rounded-2xl bg-[#faf8f5] border border-[#f0e9dc]">
                 <label class="block text-xs font-semibold text-neutral-800 mb-1.5">
@@ -415,7 +416,7 @@
                 </label>
                 <!-- Text answer -->
                 <textarea v-if="q.question_type === `text`" v-model="screeningAnswers[qi]" rows="2"
-                  class="w-full px-3 py-2 rounded-xl border border-neutral-200 text-xs focus:outline-none focus:ring-1 focus:ring-[#db802d] resize-none"
+                  :class="['w-full px-3 py-2 rounded-xl border text-xs focus:outline-none focus:ring-1 focus:ring-[#db802d] resize-none', screeningError && q.is_required && !screeningAnswers[qi]?.trim() ? 'border-rose-400' : 'border-neutral-200']"
                   :placeholder="`Your answer...`"></textarea>
                 <!-- Yes/No -->
                 <div v-else-if="q.question_type === `boolean`" class="flex gap-3">
@@ -537,11 +538,13 @@ const approvalNotes = ref('')
 const showApplyModal = ref(false)
 const coverLetter = ref('')
 const screeningAnswers = ref([])
+const screeningError = ref('')
 
 // Reset answers when modal opens
 const openApplyModal = () => {
   screeningAnswers.value = (vacancy.value?.questions || []).map(() => '')
   coverLetter.value = ''
+  screeningError.value = ''
   showApplyModal.value = true
 }
 
@@ -579,6 +582,17 @@ const loadVacancy = async () => {
 
 // Apply for Vacancy
 const submitApplication = async () => {
+  const requiredQuestions = vacancy.value?.questions || []
+  const missingRequired = requiredQuestions.some((question, index) => {
+    return question.is_required && !String(screeningAnswers.value[index] ?? '').trim()
+  })
+
+  if (missingRequired) {
+    screeningError.value = 'Please answer all required screening questions.'
+    return
+  }
+
+  screeningError.value = ''
   if (!profileStore.primaryCv) {
     notificationStore.error('Please upload a CV in your profile before applying.', 'No CV Found')
     return
@@ -586,6 +600,7 @@ const submitApplication = async () => {
   try {
     await applicationStore.apply(vacancy.value.id, {
       cover_letter: coverLetter.value || undefined,
+      screening_answers: screeningAnswers.value,
     })
     showApplyModal.value = false
     coverLetter.value = ''

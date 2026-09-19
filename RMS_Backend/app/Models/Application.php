@@ -14,6 +14,7 @@ class Application extends Model
         'user_id',
         'cv_document_id',
         'cover_letter',
+        'screening_answers',
         'status',
         'notes',
     ];
@@ -22,6 +23,7 @@ class Application extends Model
         'vacancy_id'     => 'integer',
         'user_id'        => 'integer',
         'cv_document_id' => 'integer',
+        'screening_answers' => 'array',
     ];
 
     public function vacancy()

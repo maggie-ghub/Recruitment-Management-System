@@ -1,28 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-gold: #ebb630;
-  --color-brand-gold-hover: #d9a425;
-  --color-brand-copper: #db802d;
-  --color-brand-copper-hover: #c46f20;
-  --color-brand-slate: #7a6e5a;
-  --color-brand-slate-dark: #584f40;
-  --color-brand-surface: #fdfbf7;
-  --color-brand-card: #ffffff;
-  --color-brand-border: #f0e9dc;
+  --color-brand-gold: #e9b949;
+  --color-brand-gold-hover: #d89f2e;
+  --color-brand-copper: #c96b3b;
+  --color-brand-copper-hover: #ad552c;
+  --color-brand-slate: #6d716d;
+  --color-brand-slate-dark: #29332f;
+  --color-brand-surface: #f4f6f3;
+  --color-brand-border: #e4e9e4;
 }
 
-:root {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+ :root {
+  font-family: 'DM Sans', 'Avenir Next', 'Segoe UI', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   color-scheme: light;
 }
 
 body {
   margin: 0;
-  background-color: #faf8f5;
-  color: #24221e;
+  background: #f4f6f3;
+  color: #29332f;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(201, 107, 59, 0.18);
+  color: #29332f;
 }
 
 /* Custom scrollbars */
@@ -31,14 +45,14 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1ede6;
+  background: #edf1ed;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cfc5b4;
+  background: #bdc8bf;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #7a6e5a;
+  background: #7d8b80;
 }
 
 /* Standard SaaS Input & Form Field border interactions */

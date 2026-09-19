@@ -221,6 +221,22 @@
                   No cover letter provided.
                 </div>
 
+                <!-- Screening Questions and Answers -->
+                <div v-if="profileModal.application?.vacancy?.questions?.length" class="bg-white rounded-2xl border border-[#f0e9dc] p-5">
+                  <h3 class="text-xs font-bold text-neutral-900 mb-3 flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-[#db802d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Screening Questions
+                  </h3>
+                  <div class="space-y-3">
+                    <div v-for="(question, index) in profileModal.application.vacancy.questions" :key="question.id" class="text-xs">
+                      <div class="font-semibold text-neutral-800">{{ index + 1 }}. {{ question.question_text }}</div>
+                      <div class="mt-1 p-2.5 rounded-xl bg-[#faf8f5] border border-[#f0e9dc] text-neutral-600 whitespace-pre-line">
+                        {{ profileModal.application.screening_answers?.[question.id] || 'No answer provided.' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Personal Info grid -->
                 <div class="bg-white rounded-2xl border border-[#f0e9dc] p-5">
                   <h3 class="text-xs font-bold text-neutral-900 mb-3 flex items-center gap-1.5">
@@ -486,6 +502,8 @@ const openProfile = async (app) => {
     profileModal.experiences = res.data.experiences
     profileModal.skills      = res.data.skills
     profileModal.documents   = res.data.documents
+    const matchingApplication = (res.data.applications || []).find(item => item.id === app.id)
+    if (matchingApplication) profileModal.application = matchingApplication
   } catch (err) {
     notificationStore.error(err.response?.data?.message || 'Failed to load profile.', 'Error')
   } finally {

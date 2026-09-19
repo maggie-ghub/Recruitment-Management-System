@@ -1,22 +1,24 @@
 <template>
-  <div class="min-h-screen bg-[#faf8f5] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="min-h-screen bg-[#f4f6f3] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div class="absolute -left-24 -top-24 h-72 w-72 rounded-full border-[32px] border-[#e9b949]/20"></div>
+    <div class="absolute -right-20 bottom-0 h-80 w-80 rounded-full border-[40px] border-[#c96b3b]/10"></div>
     <div class="sm:mx-auto sm:w-full sm:max-w-lg">
       <!-- Brand Header -->
       <div class="flex justify-center mb-3">
         <img src="../../assets/TORA_Logo.png" alt="Tora Holding Company Logo" class="h-16 w-auto object-contain drop-shadow-sm" />
       </div>
-      <h2 class="text-center text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+      <h2 class="text-center text-3xl sm:text-4xl font-extrabold text-[#29332f] tracking-tight relative">
         Tora Holding Company
       </h2>
-      <p class="mt-2 text-center text-base text-[#7a6e5a] font-medium">
+      <p class="mt-2 text-center text-base text-[#6d716d] font-medium relative">
         Vacancy & Recruitment Management Portal
       </p>
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-lg px-4 sm:px-0">
-      <div class="bg-white py-9 px-7 sm:px-10 shadow-xl shadow-amber-900/5 rounded-3xl border border-[#f0e9dc]">
+      <div class="bg-white py-9 px-7 sm:px-10 shadow-[0_22px_55px_rgba(41,51,47,0.1)] rounded-[26px] border border-[#e4e9e4] relative">
         <div class="mb-6 border-b border-neutral-100 pb-4">
-          <h3 class="text-xl font-bold text-neutral-900">Sign In</h3>
+          <h3 class="text-xl font-bold text-[#29332f]">Sign In</h3>
         </div>
 
         <!-- Alert messages -->
@@ -82,7 +84,7 @@
             <button
               type="submit"
               :disabled="loading"
-              class="w-full flex justify-center items-center py-3 px-4 rounded-2xl text-base font-semibold text-white bg-[#db802d] hover:bg-[#c46f20] active:scale-[0.99] transition-all shadow-md shadow-orange-900/10 disabled:opacity-50 cursor-pointer"
+              class="w-full flex justify-center items-center py-3 px-4 rounded-xl text-base font-semibold text-white bg-[#29332f] hover:bg-[#1e2723] active:scale-[0.99] transition-all shadow-md shadow-[#29332f]/15 disabled:opacity-50 cursor-pointer"
             >
               <svg v-if="loading" class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

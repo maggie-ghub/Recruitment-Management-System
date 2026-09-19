@@ -33,6 +33,38 @@ class ApplicationController extends Controller
             return response()->json(['message' => 'This vacancy is no longer accepting applications.'], 422);
         }
 
+        $screeningAnswers = $request->input('screening_answers', []);
+        if (!is_array($screeningAnswers)) {
+            $screeningAnswers = [];
+        }
+
+        foreach ($screeningAnswers as $index => $answer) {
+            if (!is_null($answer) && !is_scalar($answer)) {
+                return response()->json([
+                    'message' => 'Each screening answer must be a single value.',
+                ], 422);
+            }
+
+            $screeningAnswers[$index] = is_null($answer) ? null : (string) $answer;
+        }
+        $questions = $vacancy->questions()->get();
+        $missingQuestions = $questions
+            ->where('is_required', true)
+            ->filter(function ($question, $index) use ($screeningAnswers) {
+                $answer = $screeningAnswers[$index] ?? null;
+
+                return $answer === null || trim((string) $answer) === '';
+            })
+            ->map(fn ($question) => $question->question_text)
+            ->values();
+
+        if ($missingQuestions->isNotEmpty()) {
+            return response()->json([
+                'message' => 'Please answer all required screening questions.',
+                'errors' => ['screening_answers' => $missingQuestions],
+            ], 422);
+        }
+
         // Prevent duplicate applications (ignore withdrawn ones - applicant may re-apply)
         $existing = Application::where('vacancy_id', $vacancy->id)
             ->where('user_id', $user->id)
@@ -48,7 +80,14 @@ class ApplicationController extends Controller
         $request->validate([
             'cover_letter'   => 'nullable|string|max:5000',
             'cv_document_id' => 'nullable|exists:documents,id',
+            'screening_answers' => 'nullable|array',
+            'screening_answers.*' => 'nullable|max:5000',
         ]);
+
+        $storedScreeningAnswers = [];
+        foreach ($questions as $index => $question) {
+            $storedScreeningAnswers[$question->id] = $screeningAnswers[$index] ?? null;
+        }
 
         // If no CV document specified, find the applicant's primary CV
         $cvDocumentId = $request->cv_document_id;
@@ -65,6 +104,7 @@ class ApplicationController extends Controller
             $existing->update([
                 'cv_document_id' => $cvDocumentId,
                 'cover_letter'   => $request->cover_letter ?? $existing->cover_letter,
+                'screening_answers' => $storedScreeningAnswers,
                 'status'         => 'Submitted',
                 'notes'          => null,
             ]);
@@ -75,6 +115,7 @@ class ApplicationController extends Controller
                 'user_id'        => $user->id,
                 'cv_document_id' => $cvDocumentId,
                 'cover_letter'   => $request->cover_letter ?? null,
+                'screening_answers' => $storedScreeningAnswers,
                 'status'         => 'Submitted',
             ]);
         }
@@ -95,7 +136,7 @@ class ApplicationController extends Controller
 
         return response()->json([
             'message'     => 'Application submitted successfully.',
-            'application' => $application->load(['vacancy:id,title,reference_number,subsidiary_id', 'cvDocument:id,original_filename']),
+            'application' => $application->load(['vacancy:id,title,reference_number,subsidiary_id', 'vacancy.questions', 'cvDocument:id,original_filename']),
         ], 201);
     }
 
@@ -197,7 +238,7 @@ class ApplicationController extends Controller
         $skills       = Skill::where('user_id', $applicantUserId)->get();
         $documents    = Document::where('user_id', $applicantUserId)->latest()->get();
         $applications = Application::where('user_id', $applicantUserId)
-            ->with('vacancy:id,title,reference_number,status')
+            ->with(['vacancy:id,title,reference_number,status', 'vacancy.questions'])
             ->latest()
             ->get();
 
