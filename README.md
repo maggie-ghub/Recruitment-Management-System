@@ -306,7 +306,7 @@ mysql --version
 ### 1. Clone the Repository
 
 ```
-git clone <repository-url>
+git clone https://github.com/maggie-ghub/Recruitment-Management-System
 cd recruitment-management-system
 ```
 
@@ -578,7 +578,7 @@ The Laravel backend exposes API endpoints for communication with the Vue fronten
 
 Examples of API areas include:
 
-```text
+```
 /api/auth
 /api/users
 /api/applicants
